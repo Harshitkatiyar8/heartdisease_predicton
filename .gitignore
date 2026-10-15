@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# IDE / Editor settings
+.vscode/
+.idea/
+
+# Flask session/instance
+instance/
+.webassets-cache
+
+# NOTE: Do NOT ignore models/*.pkl - trained ML model artifacts are required for deployment.

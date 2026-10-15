@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered Heart Disease Risk Prediction web application using Logistic Regression Machine Learning model.">
+    <title>Heart Disease Risk Prediction | Healthcare AI</title>
+    <!-- Google Fonts with local fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-brand">
+                <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+                    <path d="M12 6v4"></path>
+                    <path d="M12 14h.01"></path>
+                </svg>
+                <span>Heart Disease Prediction</span>
+            </a>
+            
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#prediction" class="nav-link">Prediction</a></li>
+                <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="page-wrapper">
+
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-tag">
+                        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <span>Machine Learning & Clinical Intelligence</span>
+                    </div>
+                    
+                    <h1 class="hero-title">Heart Disease Prediction</h1>
+                    
+                    <p class="hero-subtitle">AI-powered heart disease risk prediction based on health parameters.</p>
+                    
+                    <p class="hero-description">
+                        Enter patient clinical metrics—such as blood pressure, cholesterol levels, resting ECG, and exercise-induced angina—to compute real-time statistical risk probability using a pre-trained Logistic Regression classifier.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#prediction" class="btn btn-primary btn-hero">
+                            <span>Start Prediction</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-graphic">
+                    <div class="graphic-card">
+                        <svg class="ai-heart-svg" viewBox="0 0 200 200" fill="none">
+                            <!-- Background Pulse Circles -->
+                            <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" class="pulse-ring-1"/>
+                            <circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="1.5" class="pulse-ring-2"/>
+                            
+                            <!-- ECG Heartbeat Line -->
+                            <path d="M 30 100 L 70 100 L 80 75 L 90 125 L 105 50 L 120 135 L 130 90 L 140 105 L 170 100" stroke="#0284c7" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" class="ecg-line"/>
+                            
+                            <!-- AI Nodes -->
+                            <circle cx="80" cy="75" r="5" fill="#0d9488"/>
+                            <circle cx="105" cy="50" r="6" fill="#0284c7"/>
+                            <circle cx="120" cy="135" r="5" fill="#0d9488"/>
+                        </svg>
+                        
+                        <div class="graphic-caption">
+                            <span class="caption-dot"></span>
+                            <span>Model Status: Logistic Regression Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust / Info Cards Section -->
+        <section class="info-section">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-number">01</div>
+                    <h3>Machine Learning</h3>
+                    <p>Uses a trained Logistic Regression algorithm with standardized feature scaling for risk classification.</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-number">02</div>
+                    <h3>Fast Prediction</h3>
+                    <p>Processes patient metrics in milliseconds and generates instant probability estimates.</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-number">03</div>
+                    <h3>Easy to Use</h3>
+                    <p>Intuitive clinical parameter controls with standardized range validations and clear instructions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Error Alert if files missing -->
+        {% if not model_ready %}
+        <div class="alert alert-warning" role="alert">
+            ⚠️ <strong>Notice:</strong> Machine learning model files could not be loaded. Please ensure <code>Logistic_Regression.pkl</code>, <code>scaler.pkl</code>, and <code>columns.pkl</code> are present in <code>models/</code>.
+        </div>
+        {% endif %}
+
+        <!-- Client & Server Error Banner -->
+        <div id="error-alert" class="alert alert-danger {% if not error %}hidden{% endif %}" role="alert">
+            <span id="error-alert-text">{{ error if error else 'Please enter valid information in all required fields.' }}</span>
+        </div>
+
+        <!-- Prediction Section -->
+        <section class="prediction-section" id="prediction">
+            <div class="section-header">
+                <h2>Check Your Heart Disease Risk</h2>
+                <p>Enter the required health parameters below.</p>
+            </div>
+
+            <form id="prediction-form" action="/predict" method="POST" class="prediction-form" novalidate>
+                
+                <!-- Group 1: Personal Information -->
+                <div class="form-card">
+                    <div class="card-title">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <h3>Personal Information</h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="age">Age (Years) <span class="required">*</span></label>
+                            <input type="number" id="age" name="age" min="18" max="120" placeholder="Enter age (18 - 120)" value="{{ form_data.age if form_data else '40' }}" required>
+                            <span class="field-hint">Valid range: 18 – 120 years</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="sex">Sex <span class="required">*</span></label>
+                            <select id="sex" name="sex" required>
+                                <option value="M" {% if form_data and form_data.sex == 'M' %}selected{% endif %}>Male (M)</option>
+                                <option value="F" {% if form_data and form_data.sex == 'F' %}selected{% endif %}>Female (F)</option>
+                            </select>
+                            <span class="field-hint">Biological sex designation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 2: Health Parameters -->
+                <div class="form-card">
+                    <div class="card-title">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                        <h3>Health Parameters</h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="chest_pain">Chest Pain Type <span class="required">*</span></label>
+                            <select id="chest_pain" name="chest_pain" required>
+                                <option value="ATA" {% if form_data and form_data.chest_pain == 'ATA' %}selected{% endif %}>Atypical Angina (ATA)</option>
+                                <option value="NAP" {% if form_data and form_data.chest_pain == 'NAP' %}selected{% endif %}>Non-Anginal Pain (NAP)</option>
+                                <option value="TA" {% if form_data and form_data.chest_pain == 'TA' %}selected{% endif %}>Typical Angina (TA)</option>
+                                <option value="ASY" {% if form_data and form_data.chest_pain == 'ASY' %}selected{% endif %}>Asymptomatic (ASY)</option>
+                            </select>
+                            <span class="field-hint">Type of chest discomfort experienced</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="resting_bp">Resting Blood Pressure (mm Hg) <span class="required">*</span></label>
+                            <input type="number" id="resting_bp" name="resting_bp" min="60" max="240" placeholder="e.g. 120" value="{{ form_data.resting_bp if form_data else '120' }}" required>
+                            <span class="field-hint">Resting BP on admission (60 – 240 mm Hg)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="cholesterol">Serum Cholesterol (mg/dl) <span class="required">*</span></label>
+                            <input type="number" id="cholesterol" name="cholesterol" min="0" max="600" placeholder="e.g. 200" value="{{ form_data.cholesterol if form_data else '200' }}" required>
+                            <span class="field-hint">Serum cholesterol (0 – 600 mg/dl)</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="fasting_bs">Fasting Blood Sugar > 120 mg/dl <span class="required">*</span></label>
+                            <select id="fasting_bs" name="fasting_bs" required>
+                                <option value="0" {% if form_data and form_data.fasting_bs == '0' %}selected{% endif %}>No (Fasting Blood Sugar <= 120 mg/dl)</option>
+                                <option value="1" {% if form_data and form_data.fasting_bs == '1' %}selected{% endif %}>Yes (Fasting Blood Sugar > 120 mg/dl)</option>
+                            </select>
+                            <span class="field-hint">Fasting blood sugar test result</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 3: Cardiac & Stress Metrics -->
+                <div class="form-card">
+                    <div class="card-title">
+                        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <h3>Cardiac & Stress Metrics</h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="resting_ecg">Resting ECG <span class="required">*</span></label>
+                            <select id="resting_ecg" name="resting_ecg" required>
+                                <option value="Normal" {% if form_data and form_data.resting_ecg == 'Normal' %}selected{% endif %}>Normal</option>
+                                <option value="ST" {% if form_data and form_data.resting_ecg == 'ST' %}selected{% endif %}>ST-T Wave Abnormality (ST)</option>
+                                <option value="LVH" {% if form_data and form_data.resting_ecg == 'LVH' %}selected{% endif %}>Left Ventricular Hypertrophy (LVH)</option>
+                            </select>
+                            <span class="field-hint">Resting electrocardiographic results</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="max_hr">Maximum Heart Rate (bpm) <span class="required">*</span></label>
+                            <input type="number" id="max_hr" name="max_hr" min="40" max="220" placeholder="e.g. 150" value="{{ form_data.max_hr if form_data else '150' }}" required>
+                            <span class="field-hint">Maximum heart rate achieved (40 – 220 bpm)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="exercise_angina">Exercise Induced Angina <span class="required">*</span></label>
+                            <select id="exercise_angina" name="exercise_angina" required>
+                                <option value="N" {% if form_data and form_data.exercise_angina == 'N' %}selected{% endif %}>No (N)</option>
+                                <option value="Y" {% if form_data and form_data.exercise_angina == 'Y' %}selected{% endif %}>Yes (Y)</option>
+                            </select>
+                            <span class="field-hint">Angina induced by physical exercise</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="oldpeak">Oldpeak (ST Depression) <span class="required">*</span></label>
+                            <input type="number" id="oldpeak" name="oldpeak" step="0.1" min="-2.6" max="10.0" placeholder="e.g. 1.0" value="{{ form_data.oldpeak if form_data else '1.0' }}" required>
+                            <span class="field-hint">ST depression induced by exercise (-2.6 – 10.0)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field form-field-full">
+                            <label for="st_slope">ST Slope <span class="required">*</span></label>
+                            <select id="st_slope" name="st_slope" required>
+                                <option value="Up" {% if form_data and form_data.st_slope == 'Up' %}selected{% endif %}>Upsloping (Up)</option>
+                                <option value="Flat" {% if form_data and form_data.st_slope == 'Flat' %}selected{% endif %}>Flat</option>
+                                <option value="Down" {% if form_data and form_data.st_slope == 'Down' %}selected{% endif %}>Downsloping (Down)</option>
+                            </select>
+                            <span class="field-hint">Slope of the peak exercise ST segment</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-submit-container">
+                    <button type="submit" id="submit-btn" class="btn btn-primary btn-submit" {% if not model_ready %}disabled{% endif %}>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span id="btn-text">Predict Heart Disease Risk</span>
+                        <span id="btn-spinner" class="btn-spinner hidden"></span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Result Card -->
+            <div id="result-container" class="result-wrapper {% if prediction is not defined %}hidden{% endif %}">
+                {% if prediction is defined %}
+                <div class="result-card {% if prediction == 1 %}state-risk{% else %}state-norisk{% endif %}">
+                    <div class="result-top">
+                        <div class="result-badge-icon">
+                            {% if prediction == 1 %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            {% else %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="result-heading-box">
+                            <span class="result-label">Prediction Result</span>
+                            <h3 class="result-status-title">{{ result_text }}</h3>
+                        </div>
+                    </div>
+
+                    {% if risk_probability is not none %}
+                    <div class="result-probability-box">
+                        <div class="prob-header">
+                            <span>Prediction Probability</span>
+                            <span class="prob-value">{{ risk_probability }}%</span>
+                        </div>
+                        <div class="prob-bar-track">
+                            <div class="prob-bar-fill {% if prediction == 1 %}fill-risk{% else %}fill-norisk{% endif %}" style="width: {{ risk_probability }}%;"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <p class="result-explanation">
+                        {% if prediction == 1 %}
+                        The Logistic Regression model detected patterns associated with elevated heart disease risk based on the provided clinical features.
+                        {% else %}
+                        The Logistic Regression model detected no significant indicators of heart disease risk based on the provided clinical features.
+                        {% endif %}
+                    </p>
+
+                    <div class="result-actions">
+                        <button type="button" id="reset-btn" class="btn btn-secondary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                            </svg>
+                            <span>Check Another Patient</span>
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works-section" id="how-it-works">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>An end-to-end overview of the Machine Learning pipeline.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-badge">Step 01</div>
+                    <h3>Enter Health Data</h3>
+                    <p>Provide patient clinical variables through validated input fields.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-badge">Step 02</div>
+                    <h3>Machine Learning Analysis</h3>
+                    <p>Input data undergoes categorical dummy encoding and StandardScaler normalization before model evaluation.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-badge">Step 03</div>
+                    <h3>View Prediction</h3>
+                    <p>The pre-trained Logistic Regression model outputs classification decision and risk probability.</p>
+                </div>
+            </div>
+
+            <!-- Pipeline Diagram Flow -->
+            <div class="pipeline-flow">
+                <div class="flow-item">User Input</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">Data Validation</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">Scaling / Preprocessing</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">Logistic Regression</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">Prediction & Result</div>
+            </div>
+        </section>
+
+        <!-- About The Model Section -->
+        <section class="about-section" id="about">
+            <div class="section-header">
+                <h2>About the Model</h2>
+                <p>Technical overview of the machine learning architecture.</p>
+            </div>
+
+            <div class="about-card">
+                <p>
+                    Logistic Regression is a supervised machine learning algorithm commonly used for binary classification. In this project, it is used to predict the model's heart disease classification based on the provided health parameters.
+                </p>
+                <p>
+                    Numerical inputs (such as Age, Blood Pressure, Cholesterol, Max Heart Rate, and Oldpeak) are transformed using <code>StandardScaler</code> to ensure zero mean and unit variance. Categorical variables are converted via One-Hot Dummy Encoding and aligned to the exact 15-feature matrix defined during training.
+                </p>
+            </div>
+        </section>
+
+        <!-- Disclaimer Section -->
+        <section class="disclaimer-section">
+            <div class="disclaimer-box">
+                <svg class="disclaimer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <p>
+                    <strong>Disclaimer:</strong> This application is intended for educational purposes only and does not provide medical diagnosis or medical advice. Please consult a qualified healthcare professional for medical concerns.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <svg class="brand-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+                    </svg>
+                    <span>Heart Disease Prediction</span>
+                </div>
+                <p class="footer-meta">Machine Learning Project | Built for educational purposes.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

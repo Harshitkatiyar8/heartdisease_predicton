@@ -177,6 +177,3 @@ python -m pytest
 
 ---
 
-## 🔗 Repository
-
-- **GitHub Repository**: [https://github.com/saksham196/heartdisease_predicton](https://github.com/saksham196/heartdisease_predicton)
